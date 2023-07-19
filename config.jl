@@ -1,0 +1,26 @@
+params = Dict{Symbol,Any}()
+params[:subject] = "subject_9031"
+params[:slices] = [1,2]
+params[:echoes] = [1,2]
+params[:rep] = 0
+params[:reconstruct_map] = true
+params[:comp_sensit] = true
+params[:comp_SCT] = true
+params[:trust_SCT] = false
+params[:use_SCT] = true
+params[:corr_type] = "FFT_unwrap"
+params[:FFT_interval] = 35 #70 millimiters
+
+params[:lable] = params[:corr_type] * "_rep_" * string(params[:rep])
+params[:path_imgData] = "/Users/laurabeghini/Documents/Data/" * params[:subject] * "/h5/gre2D_PS_TASCI_2.h5"
+params[:path_refData] = "/Users/laurabeghini/Documents/Data/" * params[:subject] * "/h5/gre2D_Ref_2.h5"
+params[:path_niftiMap] = "/Users/laurabeghini/Documents/Data/" * params[:subject] * "/Nifti/gre2D_Ref.nii"
+params[:path_centerline] = "/Users/laurabeghini/Documents/Data/" * params[:subject] * "/Nifti/"
+params[:path_physio] = "/Users/laurabeghini/Documents/Data/" * params[:subject] * "/Physiological_trace/belt_reco_rep"
+params[:path_sensit] = "/Users/laurabeghini/Documents/Data/" * params[:subject] * "/Results/MapEspirit_GRE_0p5.jld2"
+params[:path_noise] = "/Users/laurabeghini/Documents/Data/" * params[:subject] * "/Results/noisemat.jld2"
+params[:path_results] = "/Users/laurabeghini/Documents/Data/" * params[:subject] * "/Results/"
+file_name = split(params[:path_imgData], "/")
+file_name = last(file_name)
+file_name = split(file_name, "_2.h5")
+params[:file_name] = first(file_name)
