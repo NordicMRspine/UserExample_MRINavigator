@@ -3,7 +3,6 @@ using PyPlot, MRINavigator, MRIFiles, MRIReco, FileIO, MATLAB, MAT, Setfield, CS
 # reconstruct and save in nifti the refence data
 include("config.jl")
 if params[:reconstruct_map] == true
-    params = updateparams()
     ReconstructSaveMap(params[:path_niftiMap], params[:path_refData])
 end
 
@@ -12,30 +11,33 @@ if params[:comp_SCT] == true
     callSCT(params)
 end
 
-        
-# read raw data
+# load the first repetition, slice and echo and save the noise acquisition for optimal results
+# the noise acquisition is saved in the first repetition only
 rawData = RawAcquisitionData(ISMRMRDFile(params[:path_imgData]),
-        slice = params[:slices], contrast = params[:echoes], repetition = params[:rep])
+        slice = 0, contrast = 0, repetition = 0)
+noisemat = ExtractNoiseData!(rawData)
+FileIO.save(params[:path_noise],"noisemat",noisemat)
+        
+# load raw data
+rawData = RawAcquisitionData(ISMRMRDFile(params[:path_imgData]),
+        repetition = params[:rep])
 
 if params[:rep] != 0
     for ii = 1:length(rawData.profiles)
         rawData = @set rawData.profiles[ii].head.idx.repetition = 0
     end
+else
+    ExtractNoiseData!(rawData) # remove the noise acquisition
 end
+
+# load noise nacquisition
+noisemat = FileIO.load(params[:path_noise], "noisemat")
 
 OrderSlices!(rawData)
-if params[:rep] == 0
-    # load the first repetition and save the noise acquisition for optimal results in the subsequent reps
-    noisemat = ExtractNoiseData!(rawData)
-    FileIO.save(params[:path_noise],"noisemat",noisemat)
-else
-    # the noise acquisition is saved in the first repetition only
-    noisemat = FileIO.load(params[:path_noise], "noisemat")
-end
 ReverseBipolar!(rawData)
-RemoveRef!(rawData, params[:slices], params[:echoes])
+RemoveRef!(rawData)
 
-(nav, nav_time) = ExtractNavigator(rawData, params[:slices])
+(nav, nav_time) = ExtractNavigator(rawData)
 nav_time = nav_time .* 2.5 # seconds from beginning of the day
 
 # convert to acquisitionData (note: the estimateProfileCenter flag is set to true)
@@ -43,6 +45,10 @@ acqData = AcquisitionData(rawData, estimateProfileCenter=true)
 CopyTE!(rawData, acqData)
 AdjustSubsampleIndices!(acqData)
 acqData = convertUndersampledData(acqData)
+
+# slice and echo selection on acquisition data
+selectEcho!(acqData, params[:echoes])
+selectSlice!(acqData, params[:slices], nav, nav_time)
 
 # read reference data
 rawMap = RawAcquisitionData(ISMRMRDFile(params[:path_refData]))
@@ -59,11 +65,17 @@ if params[:comp_sensit]
     FileIO.save(params[:path_sensit],"sensit",sensit)
 end
 
+#Load coil sensitivity
+sensit = FileIO.load(params[:path_sensit], "sensit")
+sensit = reshape(sensit[:,:,params[:slices],:],(size(sensit,1), size(sensit,2),
+    size(params[:slices],1), size(sensit,4)))
+
 # Load centerline
 centerline = nothing
 if params[:use_SCT] == true
     centerline = CSV.read(params[:path_centerline] * "centerline.nii.csv", DataFrame, header=false)
     centerline = centerline.Column1
+    centerline = centerline[params[:slices]]
 end
 
 #Load trace
