@@ -67,7 +67,7 @@ acqMap = AcquisitionData(rawMap, estimateProfileCenter=true)
 if params[:comp_sensit]
 
     sensit = CompSensit(acqMap, 0.12)
-    sensit = ResizeSensit(sensit, acqMap, acqData)
+    sensit = ResizeSensit!(sensit, acqMap, acqData)
 
     #Save coil sensitivity
     FileIO.save(params[:path_sensit],"sensit",sensit)
