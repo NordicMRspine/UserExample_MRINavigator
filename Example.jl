@@ -96,7 +96,7 @@ end
 # Navigator correction
 if params[:corr_type] != "none"
     addData = additionalNavInput(noisemat, rawData, acqData, acqMap, nav_time, trace, centerline)
-    output = NavCorr!(nav[:,:,:,params[:slices]], acqData, params, addData)
+    output = NavCorr!(nav, acqData, params, addData)
 end
 
 @info "recon"
