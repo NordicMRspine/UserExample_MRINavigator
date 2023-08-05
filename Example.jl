@@ -1,4 +1,4 @@
-using PyPlot, MRINavigator, MRIFiles, MRIReco, FileIO, MATLAB, MAT, Setfield, CSV, DataFrames, Images
+using PyPlots, MRINavigator, MRIFiles, MRIReco, FileIO, MAT, Setfield, CSV, DataFrames, Images
 
 @info "Reco and Save"
 # reconstruct and save in nifti the refence data
@@ -78,7 +78,7 @@ sensit = FileIO.load(params[:path_sensit], "sensit")
 sensit = reshape(sensit[:,:,params[:slices],:],(size(sensit,1), size(sensit,2),
     size(params[:slices],1), size(sensit,4)))
 
-# Load centerline (ON LINUX: file is centerline.csv, ON WINDOWS: is centerline.nii.csv)
+# Load centerline (ON LINUX: file is centerline.csv, ON WINDOWS AND MAC: is centerline.nii.csv)
 centerline = nothing
 if params[:use_SCT] == true
     centerline = CSV.read(params[:path_centerline] * "centerline.csv", DataFrame, header=false)
@@ -102,3 +102,14 @@ end
 @info "recon"
 ## Reconstruct the data
 img = Reconstruct(acqData, sensit, noisemat)
+
+@info "display recon"
+# plot the first echo of the image
+Echo = 1
+Rows = floor(Int, sqrt(size(img,3)))
+dispimg = mosaicview(abs.(img[:,:,:,Echo]), nrow = Rows)
+imshow(dispimg, cmap = "gray")
+ax = gca()
+ax[:xaxis][:set_visible](false)
+ax[:yaxis][:set_visible](false)
+gcf()
