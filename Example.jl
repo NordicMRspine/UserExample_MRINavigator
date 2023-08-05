@@ -1,4 +1,4 @@
-using PyPlots, MRINavigator, MRIFiles, MRIReco, FileIO, MAT, Setfield, CSV, DataFrames, Images
+using PyPlot, MRINavigator, MRIFiles, MRIReco, FileIO, MAT, Setfield, CSV, DataFrames, Images
 
 @info "Reco and Save"
 # reconstruct and save in nifti the refence data
