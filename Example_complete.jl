@@ -40,6 +40,8 @@ noisemat = FileIO.load(params[:path_noise], "noisemat")
 
 OrderSlices!(rawData)
 ReverseBipolar!(rawData)
+# Make sure that RemoveRef! is needed on your data checking the time stamps with mapVBVD in Matlab.
+# mapVBVD reference: https://github.com/CIC-methods/FID-A/blob/master/inputOutput/mapVBVD/README.md
 RemoveRef!(rawData)
 
 (nav, nav_time) = ExtractNavigator(rawData)
