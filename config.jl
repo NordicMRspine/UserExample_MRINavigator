@@ -1,7 +1,7 @@
 params = Dict{Symbol,Any}()
 params[:subject] = "sub-9031"
-params[:slices] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
-params[:echoes] = [1,2]
+params[:slices] = [1,2] # nothing for all slices
+params[:echoes] = [1,2] # nothing for all echoes
 params[:rep] = 0
 params[:reconstruct_map] = true
 params[:comp_sensit] = true
