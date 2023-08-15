@@ -9,7 +9,7 @@ end
 
 @info "Find SC Centerline"
 # find the spinal cord centerline on the reconstructed reference data
-if params[:comp_SCT] == true
+if params[:comp_centerline] == true
     callSCT(params)
 end
 
@@ -80,7 +80,7 @@ sensit = reshape(sensit[:,:,params[:slices],:],(size(sensit,1), size(sensit,2),
 
 # Load centerline (ON LINUX: file is centerline.csv, ON WINDOWS AND MAC: is centerline.nii.csv)
 centerline = nothing
-if params[:use_SCT] == true
+if params[:use_centerline] == true
     centerline = CSV.read(params[:path_centerline] * "centerline.csv", DataFrame, header=false)
     centerline = centerline.Column1
     centerline = centerline[params[:slices]]
