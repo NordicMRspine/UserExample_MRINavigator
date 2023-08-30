@@ -9,7 +9,7 @@ params[:comp_centerline] = true
 params[:trust_SCT] = false
 params[:use_centerline] = true
 params[:corr_type] = "FFT_unwrap"
-params[:FFT_interval] = 35 #70 millimiters
+params[:FFT_interval] = 35 # millimiters
 params[:root_path] = "/srv/data/ajaffray/data_nordic_mr_spine/"
 
 params[:lable] = params[:corr_type] * "_rep_" * string(params[:rep])
