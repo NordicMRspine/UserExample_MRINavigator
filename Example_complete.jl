@@ -1,10 +1,11 @@
 using PyPlot, MRINavigator, MRIFiles, MRIReco, FileIO, MAT, Setfield, CSV, DataFrames, Images
 
-@info "Reco and Save"
-# reconstruct and save in nifti the refence data
 include("config.jl")
+
+@info "Reco reference scan and Save"
+# reconstruct and save in nifti format the refence data
 if params[:reconstruct_map] == true
-    ReconstructSaveMap(params[:path_niftiMap], params[:path_refData])
+    ReconstructSaveMap(params[:path_niftiMap], params[:path_refData], params[:mask_thresh])
 end
 
 @info "Find SC Centerline"
@@ -12,6 +13,8 @@ end
 if params[:comp_centerline] == true
     callSCT(params)
 end
+
+# double click enter to proceed
 
 @info "Load first rep"
 # load the first repetition, slice and echo and save the noise acquisition for optimal results
@@ -45,6 +48,7 @@ ReverseBipolar!(rawData)
 RemoveRef!(rawData)
 
 (nav, nav_time) = ExtractNavigator(rawData)
+
 nav_time = nav_time .* 2.5 # seconds from beginning of the day
 
 @info "convert data and adjust"
@@ -56,7 +60,7 @@ acqData = convertUndersampledData(acqData)
 
 # slice and echo selection on acquisition data
 selectEcho!(acqData, params[:echoes])
-selectSlice!(acqData, params[:slices], nav, nav_time)
+(nav, nav_time) = selectSlice!(acqData, params[:slices], nav, nav_time)
 
 @info "read ref data"
 # read reference data
@@ -68,7 +72,7 @@ acqMap = AcquisitionData(rawMap, estimateProfileCenter=true)
 ## compute or load the coil sensitivity map
 if params[:comp_sensit]
 
-    sensit = CompSensit(acqMap, 0.12)
+    sensit = CompSensit(acqMap, params[:mask_thresh])
     sensit = ResizeSensit!(sensit, acqMap, acqData)
 
     #Save coil sensitivity
@@ -77,21 +81,25 @@ end
 
 #Load coil sensitivity
 sensit = FileIO.load(params[:path_sensit], "sensit")
-sensit = reshape(sensit[:,:,params[:slices],:],(size(sensit,1), size(sensit,2),
-    size(params[:slices],1), size(sensit,4)))
+if !isnothing(params[:slices])
+    sensit = reshape(sensit[:,:,params[:slices],:],(size(sensit,1), size(sensit,2),
+        size(params[:slices],1), size(sensit,4)))
+end
 
 # Load centerline (ON LINUX: file is centerline.csv, ON WINDOWS AND MAC: is centerline.nii.csv)
 centerline = nothing
 if params[:use_centerline] == true
-    centerline = CSV.read(params[:path_centerline] * "centerline.csv", DataFrame, header=false)
+    centerline = CSV.read(params[:path_centerline] * "centerline.nii.csv", DataFrame, header=false)
     centerline = centerline.Column1
-    centerline = centerline[params[:slices]]
+    if !isnothing(params[:slices])
+        centerline = centerline[params[:slices]]
+    end
 end
 
 #Load trace
 trace = nothing
 if params[:corr_type] == "FFT_unwrap"
-    trace = read(matopen(params[:path_physio] * string(params[:rep]+1) * ".mat"), "data")
+    trace = read(matopen(params[:path_physio]), "data")
 end
 
 @info "nav corr"
@@ -115,3 +123,15 @@ ax = gca()
 ax[:xaxis][:set_visible](false)
 ax[:yaxis][:set_visible](false)
 gcf()
+
+
+
+nav = output.navigator
+file = matopen("/Users/laurabeghini/Desktop/files/nav.mat", "w")
+write(file, "nav", nav)
+close(file)
+
+nav_time = output.nav_time
+file = matopen("/Users/laurabeghini/Desktop/files/nav_time.mat", "w")
+write(file, "nav_time", nav_time)
+close(file)
