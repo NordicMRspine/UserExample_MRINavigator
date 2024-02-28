@@ -8,6 +8,7 @@ For installations informations check out the package [documentation](https://Nor
 An example dataset acquired on a phantom can be downloaded [here]().
 
 # Example results
+The following example results can be obtained running the user example scripts contained in this folder on the available [phantom data]().
 1. Images reconstructed without navigator correction (`params[:corr_type] = "none"` in the [parameters dictionary](https://nordicmrspine.github.io/MRINavigator.jl/dev/GettingStarted/#The-parameters-dictionary)).
 
 ![nocorr](./docs/nav_nocorr.png)
