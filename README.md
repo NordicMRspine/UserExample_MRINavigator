@@ -10,8 +10,13 @@ Example data can be downloaded [here]().
 
 # Example results
 1. Images reconstructed without navigator correction.
+
 ![nocorr](./docs/nav_nocorr.png)
+
 2. Images reconstructed after applying the [FFT_unwrap](https://nordicmrspine.github.io/MRINavigator.jl/dev/Pipelines/) navigator corection.
+
 ![corr](./docs/nav_corr.png)
+
 3. Navigator phase estimates for different slices, displayes with the simulated respiratory belt recording.
+
 ![nav](./docs/nav.png)
