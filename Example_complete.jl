@@ -19,8 +19,7 @@ end
 @info "Load first rep"
 # load the first repetition, slice and echo and save the noise acquisition for optimal results
 # the noise acquisition is saved in the first repetition only
-rawData = RawAcquisitionData(ISMRMRDFile(params[:path_imgData]),
-        slice = 0, contrast = 0, repetition = 0)
+rawData = RawAcquisitionData(ISMRMRDFile(params[:path_imgData]), repetition = 0)
 noisemat = ExtractNoiseData!(rawData)
 FileIO.save(params[:path_noise],"noisemat",noisemat)
         
@@ -114,24 +113,27 @@ end
 img = Reconstruct(acqData, sensit, noisemat)
 
 @info "display recon"
-# plot the first echo of the image
-Echo = 1
-Rows = floor(Int, sqrt(size(img,3)))
-dispimg = mosaicview(abs.(img[:,:,:,Echo]), nrow = Rows)
-imshow(dispimg, cmap = "gray")
+# plot the last echo of the image
+img = reshape(img, (size(img,1), size(img,2), size(img,3), size(img,4)))
+img = img[:,:,:,end:end]
+img = permutedims(img, (2,1,3,4))
+img = reverse(img, dims = 1)
+Rows = ceil(Int, sqrt(size(img,3)))
+figure()
+dispimg = mosaicview(abs.(img[:,:,:]), nrow = Rows)
+imshow(dispimg, cmap = "gray", vmax = 9e-7, aspect = "equal")
 ax = gca()
 ax[:xaxis][:set_visible](false)
 ax[:yaxis][:set_visible](false)
 gcf()
 
-
-
-nav = output.navigator
-file = matopen("/Users/laurabeghini/Desktop/files/nav.mat", "w")
-write(file, "nav", nav)
-close(file)
-
-nav_time = output.nav_time
-file = matopen("/Users/laurabeghini/Desktop/files/nav_time.mat", "w")
-write(file, "nav_time", nav_time)
-close(file)
+@info "display navigator estimates"
+# plot the navigator estimates and respiratory trace recording
+figure()
+x = (output.nav_time[:,:] .- output.nav_time[1,1])/1000
+p = plot((output.trace_time .- output.nav_time[1,1])/1000, output.trace_aligned, ".", markersize = 2 , color = "k")
+p = plot(x, output.navigator[1,1,:,:], linewidth=2.0)
+#legend(["belt trace", "slice 1", "slice 2", "slice 3", "slice 4"],loc=4)
+xlabel("Time [s]")
+ylabel("Phase variations [rad]")
+gcf()
