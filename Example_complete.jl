@@ -5,7 +5,8 @@ include("config.jl")
 @info "Reco reference scan and Save"
 # reconstruct and save in nifti format the refence data
 if params[:reconstruct_map] == true
-    ReconstructSaveMap(params[:path_niftiMap], params[:path_refData], params[:mask_thresh])
+    #ReconstructSaveMap(params[:path_niftiMap], params[:path_refData], params[:mask_thresh])
+    ReconstructSaveMap(params[:path_niftiMap], params[:path_refData])
 end
 
 @info "Find SC Centerline"
@@ -88,7 +89,11 @@ end
 # Load centerline (ON LINUX: file is centerline.csv, ON WINDOWS AND MAC: is centerline.nii.csv)
 centerline = nothing
 if params[:use_centerline] == true
-    centerline = CSV.read(params[:path_centerline] * "centerline.nii.csv", DataFrame, header=false)
+    if Sys.islinux()
+        centerline = CSV.read(params[:path_centerline] * "centerline.csv", DataFrame, header=false)
+    else
+        centerline = CSV.read(params[:path_centerline] * "centerline.nii.csv", DataFrame, header=false)
+    end
     centerline = centerline.Column1
     if !isnothing(params[:slices])
         centerline = centerline[params[:slices]]
