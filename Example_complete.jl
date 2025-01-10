@@ -138,7 +138,7 @@ figure()
 x = (output.nav_time[:,:] .- output.nav_time[1,1])/1000
 p = plot((output.trace_time .- output.nav_time[1,1])/1000, output.trace_aligned, ".", markersize = 2 , color = "k")
 p = plot(x, output.navigator[1,1,:,:], linewidth=2.0)
-#legend(["belt trace", "slice 1", "slice 2", "slice 3", "slice 4"],loc=4)
+legend(["belt trace", "slice 1", "slice 2", "slice 3", "slice 4"],loc=4)
 xlabel("Time [s]")
 ylabel("Phase variations [rad]")
 gcf()
