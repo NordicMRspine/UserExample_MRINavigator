@@ -2,7 +2,7 @@
 
 
 # UserExample_MRINavigator
-This folder contains example scripts for the [MRINavigator.jl](https://github.com/NordicMRspine/MRINavigator.jl) package. The package documentation can be found [here](https://NordicMRspine.github.io/MRINavigator.jl/dev). The example scripts have been tested on Julia v1.10.2 and MRINavigator v0.1.1.
+This folder contains example scripts for the [MRINavigator.jl](https://github.com/NordicMRspine/MRINavigator.jl) package. The package documentation can be found [here](https://NordicMRspine.github.io/MRINavigator.jl/dev).
 
 An example dataset acquired on a phantom can be downloaded [here](https://doi.org/10.5281/zenodo.10731729). When the download is complete extract to your local folder.
 
