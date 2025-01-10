@@ -20,7 +20,7 @@ This example scripts directory also needs to be installed in a location of your 
 
 Before running the script open the **config.jl** file and insert the path of the parent directory of the example data in line 14 (assigning it to `params[:root_path]`). 
 Add the folder separation symbol (`/` for macOS/Linux or `\` for Windows) at the end of the path. This indicates that the path refers to a folder and not a file.
-Additional imput paraters can be modified in the **config.jl** file.
+Additional input parameters can be modified in the **config.jl** file.
 
 The example scripts ([Example_compact.jl](https://github.com/NordicMRspine/UserExample_MRINavigator/blob/slice_echo_selection/Example_compact.jl), 
 [Example_semiCompact.jl](https://github.com/NordicMRspine/UserExample_MRINavigator/blob/slice_echo_selection/Example_semiCompact.jl), and 
