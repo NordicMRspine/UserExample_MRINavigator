@@ -18,9 +18,13 @@ This example scripts directory also needs to be installed in a location of your 
     ```
 2. Click the green **Code** button at the top right of this webpage, then select **Download ZIP**. Once the download is completed extract its contents into your desired directory.
 
-Before running the script open the **config.jl** file and insert the path of the parent directory of the example data in line 14 (assigning it to `params[:root_path]`). Add the folder separation symbol (`/` for macOS/Linux or `\` for Windows) at the end of the path. This indicates that the path refers to a folder and not a file.
+Before running the script open the **config.jl** file and insert the path of the parent directory of the example data in line 14 (assigning it to `params[:root_path]`). 
+Add the folder separation symbol (`/` for macOS/Linux or `\` for Windows) at the end of the path. This indicates that the path refers to a folder and not a file.
+Additional imput paraters can be modified in the **config.jl** file.
 
-The scripts can be run now.
+The example scripts ([Example_compact.jl](https://github.com/NordicMRspine/UserExample_MRINavigator/blob/slice_echo_selection/Example_compact.jl), 
+[Example_semiCompact.jl](https://github.com/NordicMRspine/UserExample_MRINavigator/blob/slice_echo_selection/Example_semiCompact.jl), and 
+[Example_complete.jl](https://github.com/NordicMRspine/UserExample_MRINavigator/blob/slice_echo_selection/Example_complete.jl)) can be run now.
 
 ## Example results
 The following example results can be obtained running the user example scripts contained in this folder on the available [phantom data](https://doi.org/10.5281/zenodo.10731729).
