@@ -18,7 +18,7 @@ This example scripts directory also needs to be installed in a location of your 
     ```
 2. Click the green **Code** button at the top right of this webpage, then select **Download ZIP**. Once the download is completed extract its contents into your desired directory.
 
-Before running the script open the **config.jl** file and copy the path of the parent directory of the example data in line 14, assigning it to `params[:root_path]`. Add the folder separation symbol (`/` for macOS/Linux or `\` for Windows) at the end of the path. This indicates that the path refers to a folder and not a file.
+Before running the script open the **config.jl** file and insert the path of the parent directory of the example data in line 14 (assigning it to `params[:root_path]`). Add the folder separation symbol (`/` for macOS/Linux or `\` for Windows) at the end of the path. This indicates that the path refers to a folder and not a file.
 
 The scripts can be run now.
 
