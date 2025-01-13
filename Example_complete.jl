@@ -5,8 +5,7 @@ include("config.jl")
 @info "Reco reference scan and Save"
 # reconstruct and save in nifti format the refence data
 if params[:reconstruct_map] == true
-    #ReconstructSaveMap(params[:path_niftiMap], params[:path_refData], params[:mask_thresh])
-    ReconstructSaveMap(params[:path_niftiMap], params[:path_refData])
+    ReconstructSaveMap(params[:path_niftiMap], params[:path_refData], params[:mask_thresh])
 end
 
 @info "Find SC Centerline"
@@ -89,10 +88,10 @@ end
 # Load centerline (ON LINUX: file is centerline.csv, ON WINDOWS AND MAC: is centerline.nii.csv)
 centerline = nothing
 if params[:use_centerline] == true
-    if Sys.islinux()
-        centerline = CSV.read(params[:path_centerline] * "centerline.csv", DataFrame, header=false)
-    else
+    if isfile(params[:path_centerline] * "centerline.nii.csv")
         centerline = CSV.read(params[:path_centerline] * "centerline.nii.csv", DataFrame, header=false)
+    else
+        centerline = CSV.read(params[:path_centerline] * "centerline.csv", DataFrame, header=false)
     end
     centerline = centerline.Column1
     if !isnothing(params[:slices])
@@ -138,7 +137,7 @@ figure()
 x = (output.nav_time[:,:] .- output.nav_time[1,1])/1000
 p = plot((output.trace_time .- output.nav_time[1,1])/1000, output.trace_aligned, ".", markersize = 2 , color = "k")
 p = plot(x, output.navigator[1,1,:,:], linewidth=2.0)
-#legend(["belt trace", "slice 1", "slice 2", "slice 3", "slice 4"],loc=4)
+legend(["belt trace", "slice 1", "slice 2", "slice 3", "slice 4"],loc=4)
 xlabel("Time [s]")
 ylabel("Phase variations [rad]")
 gcf()
