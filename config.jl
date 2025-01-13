@@ -11,7 +11,8 @@ params[:use_centerline] = true
 params[:corr_type] = "FFT_unwrap"
 params[:FFT_interval] = 35 # millimiters
 params[:mask_thresh] = 0.05
-params[:root_path] = "WRITE YOUR ROOT PHATH HERE"
+#params[:root_path] = "WRITE YOUR ROOT PHATH HERE"
+params[:root_path] = "/Users/laurabeghini/Desktop/"
 
 params[:lable] = params[:corr_type] * "_rep_" * string(params[:rep])
 params[:path_imgData] = params[:root_path] * params[:subject] * "/h5/GRE_PS.h5"
