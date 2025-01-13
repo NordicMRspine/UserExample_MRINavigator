@@ -40,5 +40,7 @@ The following example results can be obtained running the user example scripts c
 
 ![nav](./docs/nav.png)
 
+The figures were generated on a machine running macOS Sonoma 14.5 (Apple M1 Max chip).
+
 ## Acknowledgement
 The authors thank the ISMRM Reproducible Research Study Group for conducting a code review of the code (package version 0.1.1). The scope of the code review covered only the code’s ease of download, quality of documentation, and ability to run, but did not consider scientific accuracy or code efficiency.
