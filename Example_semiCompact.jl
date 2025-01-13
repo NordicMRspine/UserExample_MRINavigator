@@ -12,7 +12,7 @@ rawData = loadRawData(params)
 noisemat = FileIO.load(params[:path_noise], "noisemat")
 
 @info "Extract navigator data. The time stamps are accurate only for Siemens data."
-@info "The navigaotr extraction is effective only if the navigator profile was acquired after the first image profile."
+@info "The navigator extraction is effective only if the navigator profile was acquired after the first image profile."
 (nav, nav_time) = ExtractNavigator(rawData)
 nav_time = nav_time .* 2.5 # seconds from beginning of the day (Siemens data only)
 
