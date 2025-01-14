@@ -6,7 +6,7 @@ This folder contains example scripts for the [MRINavigator.jl](https://github.co
 
 An example dataset acquired on a phantom can be downloaded [here](https://doi.org/10.5281/zenodo.10731729). When the download is complete extract to your local folder.
 
-## Instantiation step
+## Installation
 To use some package functionalities, external software are required. Specifically: [Spinal Cord Toolbox](https://spinalcordtoolbox.com/stable/) and [FSLeyes](https://open.win.ox.ac.uk/pages/fsl/fsleyes/fsleyes/userdoc/install.html).
 
 The example data consists of a folder named **sub01** containing the files and folder structure needed to run the example scripts. This can be installed in any parent directory of your choice.
