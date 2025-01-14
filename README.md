@@ -18,6 +18,18 @@ This example scripts directory also needs to be installed in a location of your 
     ```
 2. Click the green **Code** button at the top right of this webpage, then select **Download ZIP**. Once the download is completed extract its contents into your desired directory.
 
+Once the code is installed, select the Julia environment in which you want to run it. It is recommended to create a new environment in the folder where the code is located. To install all the packages listed in the Manifest.toml file of your Julia environment, you can use the Pkg.instantiate function. This ensures that all dependencies are resolved and installed exactly as specified in the Manifest.toml file. Follow these steps:
+1. Open the Julia REPL.
+2. Activate your environment:
+    ```
+    using Pkg
+    Pkg.activate("path/to/environment")
+    ```
+3. Install all the packages running:
+    ```
+    Pkg.instantiate()
+    ```
+    
 Before running the script open the **config.jl** file and insert the path of the parent directory of the example data in line 14 (assigning it to `params[:root_path]`). 
 Add the folder separation symbol (`/` for macOS/Linux or `\` for Windows) at the end of the path. This indicates that the path refers to a folder and not a file.
 Additional input parameters can be modified in the **config.jl** file.
@@ -43,4 +55,4 @@ The following example results can be obtained running the user example scripts c
 The figures were generated on a machine running macOS Sonoma 14.5 (Apple M1 Max chip).
 
 ## Acknowledgement
-The authors thank the ISMRM Reproducible Research Study Group for conducting a code review of the code (package version 0.1.1). The scope of the code review covered only the code’s ease of download, quality of documentation, and ability to run, but did not consider scientific accuracy or code efficiency.
+The authors thank the ISMRM Reproducible Research Study Group for conducting a code review of the code (package version 0.1.1, user exaple version 0.0.1). The scope of the code review covered only the code’s ease of download, quality of documentation, and ability to run, but did not consider scientific accuracy or code efficiency.
